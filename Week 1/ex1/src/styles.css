@@ -1,0 +1,43 @@
+body{
+  font: 1em sans-serif;
+}
+
+#app{
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.img-container{
+  max-width: 50%;
+  min-width: 50%;
+}
+
+.wiki-text{
+  max-width: 50%;
+  min-width: 50%;
+}
+
+.wiki-image{
+  width: 100%;
+}
+
+.wiki-header{
+  margin: 10px 0 0 10px; 
+  text-align: center;
+}
+
+
+.wiki-item{
+  margin-left: 10px;
+  margin-right: 10px;
+  box-shadow: grey 5px 5px 5px 5px;
+}
+
+.wiki-content{
+  padding: 10px 10px 10px 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+
+
