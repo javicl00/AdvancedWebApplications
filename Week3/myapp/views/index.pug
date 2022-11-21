@@ -1,0 +1,37 @@
+extends layout
+
+block content
+    h1= title
+    p Welcome to #{title}
+    form(action="/todo" method="post" )
+        label(for="name") Name: 
+        input#input-name(type="text" name="name") 
+        label(for="task") Task:
+        input#input-task(type="text" name="task") 
+        button#submit-data(type="submit" name="submit" value="submit") Submit
+
+    form(action="" method="get") 
+        label(for="search-name") Search by name:
+        input#search-name(type="text")
+        button#search(type="submit") Search
+
+    if msg != null
+        p= msg
+
+    if message == null
+        p No tasks found
+    else
+        p#nameUser= message.name
+        form(action="/user/todo" method="post")
+            button#delete-user(type="submit" name="delete" value="delete") Delete
+        for task in message.tasks
+            p#taskName= task
+            form(action="/user/" + message.name , method="post")
+                button.delete-task(type="submit" name="delete" value="delete") Delete
+                
+
+
+
+
+
+
