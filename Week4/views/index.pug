@@ -1,0 +1,74 @@
+extends layout
+
+block content
+  //navbar goes here
+  nav
+    .nav-wrapper
+      a(href='#' class='brand-logo') Logo
+      ul(id='nav-mobile' class='right hide-on-med-and-down')
+        li
+          a(href='#') Home
+        li
+          a(href='#') About
+        li
+          a(href='#') Contact
+  div(class="container")
+      h1= title
+      p Welcome to #{title}
+      // check if recipe is defined
+      div(class="col")
+        if recipe
+          if !recipe.name
+            h2 Recipe of Nothing
+          else 
+            h2 Recipe of #{recipe.name}
+          p #{recipe.description}
+          h2 Ingredients
+          ul
+            if recipe.ingredients
+              // if there is only one ingredient it will be shown as a string
+              if typeof recipe.ingredients === 'string'
+                li= recipe.ingredients
+              else
+                each ingredient in recipe.ingredients
+                  li= ingredient
+            else
+              li No ingredients
+          h2 Instructions
+          ol
+            if recipe.instructions
+              // if there is only one ingredient it will be shown as a string
+              if typeof recipe.instructions === 'string'
+                li= recipe.instructions
+              else
+                each instruction in recipe.instructions
+                  li= instruction
+            else
+              h3 No instructions
+        else
+          p No recipe found
+      div(class="col")
+        h2 Add a new recipe
+        form#recipeData(action="#")
+          label(for="name-text") Name of Recipe
+          input#name-text(type="text")
+          button#submit.btn(type="submit") Submit
+
+        form#addIngredientForm(action="#")
+          h4 Ingredients 
+          label(for="ingredient-text") Ingredients
+          textarea#ingredients-text
+          button#add-ingredient.btn(type="button") Ingredient
+
+        form#addInstructionsForm(action="#")
+          h4 Instructions
+          label(for="instruction-text") Instructions
+          textarea#instructions-text
+          button#add-instruction.btn(type="button") Instructions
+
+      form#add-image(action="/images")
+        // input  for files only allows images and accept multiple files send 
+        // them as formData
+        
+        input#image-input(type="file" name="image" accept="image/*" multiple)
+
