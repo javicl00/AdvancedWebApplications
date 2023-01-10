@@ -8,6 +8,21 @@ let submitBtn = document.getElementById("submit");
 let addRecipeBtn = document.getElementById("addRecipeButton");
 let addImages = document.getElementById("image-input");
 
+function pizza() {
+    let receta1 = { name: "", ingredients: [], instructions: [] };
+    fetch("/recipe/pizza").then((response) => {
+        response.json().then((data) => {
+            document.getElementById("recipeName").innerHTML = data.name;
+            document.getElementById("recipeIng").innerHTML = data.ingredients;
+            document.getElementById("recipeIns").innerHTML = data.instructions;
+        });
+    });
+    console.log(receta1);
+    res.render('index', { title: 'Express', recipe: receta1 });
+}
+
+pizza();
+
 if (addIngredientBtn) {
     addIngredientBtn.addEventListener("click", function (event) {
         event.preventDefault();
@@ -35,21 +50,21 @@ if (submitBtn) {
         };
         console.log(recipe);
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "/recipe");
+        xhr.open("POST", "/recipe/");
         xhr.setRequestHeader("Content-Type", "application/json");
-        
-        xhr.send(recipe); 
+
+        xhr.send(recipe);
         instructions = [];
         ingredients = [];
 
-
+        let imagenes = document.getElementById("image-input").files;
         let formData = new FormData();
-        formData.append("images", addImages.files);
+        for (let i = 0; i < imagenes.length; i++) {
+            formData.append("images", imagenes[i]);
+        }
         let xhr2 = new XMLHttpRequest();
-        xhr2.open("POST", "/images");
+        xhr2.open("POST", "/images/");
         xhr2.setRequestHeader("Content-Type", "multipart/form-data");
         xhr2.send(formData);
     });
 }
-
-

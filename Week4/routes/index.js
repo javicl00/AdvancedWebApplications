@@ -2,31 +2,47 @@ var express = require('express');
 var router = express.Router();
 var fs = require("fs");
 var path = require("path");
+var Recetas = require("../model/recetas.json");
 /* GET home page. */
 
-router.get('/', function (req, res, next) {
-    let recipe = {
-        name: req.body.name,
-        ingredients: req.body.ingredients,
-        instructions: req.body.instructions,
-    };
+let receta = {
+    name: "Pasta",
+    ingredients: ["Pasta", "Salsa", "Queso"],
+    instructions: ["Cocinar la pasta", "Agregar salsa", "Agregar queso"],
+};
 
-    let receta = {
-        name: "Pasta",
-        ingredients: ["Pasta", "Salsa", "Queso"],
-        instructions: ["Cocinar la pasta", "Agregar salsa", "Agregar queso"],
-    };
-    res.render('../views/index.pug', { recipe: receta, title: 'Recetario' });
+router.get('/', function (req, res, next) {
+  // use fecth to get the data from the server
+  res.render('index', { title: 'Express'});
 });
 
 router.get("/recipe/:food", function (req, res, next) {
   let food = req.params.food;
-  let recipe = {
-    name: food,
-    instructions: req.body.instructions,
-    ingredients: req.body.ingredients
-  };
-  res.send(recipe);
+
+  let receta = Recetas.find((receta) => receta.name === food);
+
+  // let recipe = {
+  //   name: food,
+
+  //   instructions: req.body.instructions,
+  //   ingredients: req.body.ingredients
+  // };
+
+  // If we dont find the recipe send back food with empty ingridients and instructions
+  if (!receta) {
+    receta = {
+      name: food,
+      instructions: [],
+      ingredients: [],
+    };
+    res.send(receta);
+  }
+  else {
+    // Send back the recipe
+    res.send(receta);
+  }
+
+  // res.send(recipe);
   // let recetas = JSON.parse(fs.readFileSync(path.join(__dirname, "../model/recetas.json")));
   // let receta = recetas.find((receta) => receta.name === food);
   // if (receta) {
@@ -35,7 +51,7 @@ router.get("/recipe/:food", function (req, res, next) {
   // else {
   //   res.render("../views/index.pug", { recipe: recipe, title: "Recipe", name: food });
   // }
-  console.log(recipe.name);
+  // console.log(recipe.name);
 });
 
 

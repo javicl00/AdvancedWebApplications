@@ -6,6 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const mongoDB = 'mongodb://localhost:27017/advancedWebApplications';
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 var app = express();
 

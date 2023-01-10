@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  nav.pink(role="container")
+    div(class="nav-wrapper container")
+      a#logo-container(href="/") Logo
+      ul(class="right hide-on-med-and-down")
+        li
+          input#searchBtn(type="search" placeholder="Search" class="right hide-on-med-and-down")
+  div(class="container")
+    h1= title
+    p Welcome to #{title}
+    div(class="col")
+    h2 Recipes
+    p#recipeName
+    h2 Ingredients 
+    ul#recipeIng
+    h2 Instructions
+    ul#recipeIns
+
+    div(class="col")
+      h2 Add a new recipe
+      form#recipeData(action="#")
+        label(for="name-text") Name of Recipe
+        input#name-text(type="text")
+        button#submit.btn(type="submit") Submit
+
+      form#addIngredientForm(action="#")
+        h4 Ingredients 
+        label(for="ingredient-text") Ingredients
+        textarea#ingredients-text
+        button#add-ingredient.btn(type="button") Ingredient
+
+      form#addInstructionsForm(action="#")
+        h4 Instructions
+        label(for="instruction-text") Instructions
+        textarea#instructions-text
+        button#add-instruction.btn(type="button") Instructions
+
+    form#add-image(action="/images")
+      // input  for files only allows images and accept multiple files send 
+      // them as formData
+
+      input#image-input(type="file" name="image" accept="image/*" multiple)
+
