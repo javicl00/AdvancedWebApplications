@@ -9,7 +9,7 @@ export default class Vehicle implements IVehicle {
     public bodyType?: string,
     public wheelCount?: number,
     public draft?: number,
-    public wingSpan?: number
+    public wingspan?: number
   ) {
     this.model = model;
     this.color = color;
@@ -18,6 +18,6 @@ export default class Vehicle implements IVehicle {
     this.bodyType = bodyType;
     this.wheelCount = wheelCount;
     this.draft = draft;
-    this.wingSpan = wingSpan;
+    this.wingspan = wingspan;
   }
 }
