@@ -28,6 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// Add headers to allow cross-origin requests
 app.use((req: any, res: any, next: any) => {
   if (
     req.headers &&
@@ -107,7 +108,6 @@ app.post("/api/user/login/", (req: express.Request, res: express.Response) => {
           expiresIn: "1h",
         });
         let resultado: any = { success: true, token: token };
-        // set the token as a cookie
         res.cookie("token", token, { httpOnly: true }).send(resultado);
       } else {
         res.status(403).send("Incorrect password");
