@@ -10,8 +10,6 @@ const { body, validationResult } = require("express-validator");
 const validateToken = require("../auth/validateToken.js");
 const app: express.Application = express();
 const port: number = 3000;
-// MONOGODB CONNECTION
-// Connect to MongoDB database using mongoose and body-parser
 const mongoDB = "mongodb://localhost:27017/testdb";
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
@@ -69,9 +67,8 @@ app.post("/api/user/register",(req: express.Request, res: express.Response, next
       if (user) {
         return res.status(403).json({ email: "email already in use." });
       } else {
-        // validate password strength
         let password = req.body.password;
-        // at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 chaaracter of ~`!@#$%^&*()-_+={}[]|\;:"<>,./?
+        // Regex expression from https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
         let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#$%^&*()-_+={}[\]\\|;:"<>,./?])(?=.{8,})/;
 
         if (!passwordRegex.test(password)) {
