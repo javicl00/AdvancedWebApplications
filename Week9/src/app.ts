@@ -12,7 +12,7 @@ const app: express.Application = express();
 const port: number = 3000;
 // MONOGODB CONNECTION
 // Connect to MongoDB database using mongoose and body-parser
-const mongoDB = "mongodb://localhost:27017/advancedWebApplications";
+const mongoDB = "mongodb://localhost:27017/testdb";
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
@@ -55,39 +55,44 @@ app.get("/", (req: express.Request, res: express.Response) => {
   res.send("Hello World!");
 });
 
-app.post("/api/user/register", (req: express.Request, res:express.Response, next: any) => {
+app.post("/api/user/register",(req: express.Request, res: express.Response, next: any) => {
+    let email = req.body.email;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    User.findOne({ username: req.body.username }, (err: Error , user: Object) => {
+    User.findOne({ email: email }, (err: Error, user: Object) => {
       if (err) {
         console.log(err);
         throw err;
       }
       if (user) {
-        return res.status(403).json({ username: "Username already in use." });
+        return res.status(403).json({ email: "email already in use." });
       } else {
-        bcrypt.genSalt(10, (err: Error, salt: string) => {
-          bcrypt.hash(req.body.password, salt, (err: Error, hash: string) => {
-            if (err) throw err;
-            User.create(
-              {
-                username: req.body.username,
-                password: hash,
-              },
-              (err: Error, ok: string) => {
-                if (err) throw err;
-                return res.redirect("/api/user/login");
-              }
-            );
-          });
-        });
-      }
-    });
-  }
-);
+        // validate password strength
+        let password = req.body.password;
+        // at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 chaaracter of ~`!@#$%^&*()-_+={}[]|\;:"<>,./?
+        let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#$%^&*()-_+={}[\]\\|;:"<>,./?])(?=.{8,})/;
 
+        if (!passwordRegex.test(password)) {
+          return res.status(400).json({ password: "Password is not strong enough." });
+        } else {
+            bcrypt.hashSync(req.body.password, 10);
+            let user = new User({ 
+                email: req.body.email,
+                password: bcrypt.hashSync(req.body.password, 10)
+            });
+            user.save((err: Error) => {
+                if (err) {
+                    return next(err);
+                } else {
+                    res.status(200).json({ success: true, message: "User created" });
+                }
+            });
+        }
+        }
+    });
+});
 app.post("/api/user/login/", (req: express.Request, res: express.Response) => {
   let email: string = req.body.email;
   let password: string = req.body.password;
@@ -115,17 +120,17 @@ app.post("/api/user/login/", (req: express.Request, res: express.Response) => {
 });
 
 app.get("/api/private/", (req: express.Request, res: express.Response) => {
-    if (req.cookies.token) {
-        jwt.verify(req.cookies.token, "REST API", (err: any, decoded: any) => {
-            if (err) {
-                res.status(403).send("Invalid token");
-            } else {
-                res.json({ email: decoded.email });
-            }
-        });
-    } else {
-        res.status(403).send("No token provided");
-    }
+  if (req.cookies.token) {
+    jwt.verify(req.cookies.token, "REST API", (err: any, decoded: any) => {
+      if (err) {
+        res.status(403).send("Invalid token");
+      } else {
+        res.json({ email: decoded.email });
+      }
+    });
+  } else {
+    res.status(401).send("No token provided");
+  }
 });
 
 app.listen(port, () => {
