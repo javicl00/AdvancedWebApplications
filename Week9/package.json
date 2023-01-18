@@ -1,0 +1,41 @@
+{
+  "name": "week9",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node ./src/app.ts",
+    "dev": "npx nodemon ./src/app.ts"
+  },
+  "author": "Javier CL",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.9.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "mongoose": "^6.0.11",
+    "jsonwebtoken": "^8.5.1",
+    "passport-jwt": "^4.0.0",
+    "bcrypt": "^5.0.1",
+    "express": "~4.16.1",
+    "express-session": "^1.17.3",
+    "nodemon": "^2.0.20",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express-validator": "^6.13.0",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.10",
+    "tsc-watch": "latest",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.9.3"
+  }
+}
