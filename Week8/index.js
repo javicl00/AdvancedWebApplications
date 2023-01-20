@@ -59,7 +59,8 @@ app.post('/api/user/register', (req, res) => {
       }
     })
     res.status(200).send(user);
-}})
+  }
+})
 
 
 app.get('/api/user/list', (req, res) => {
@@ -117,7 +118,7 @@ app.post('/api/todos', (req, res) => {
         console.log(err)
       }
     })
-    res.status(200).set('user',req.user).send("Tarea agregada");
+    res.status(200).set('user', req.user).send("Tarea agregada");
   } else {
     res.status(400).send("Usuario no encontrado");
   }
@@ -152,7 +153,7 @@ app.get('/', (req, res) => {
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-      return next()
+    return next()
   }
 
   return res.status(401).send("No estas logueado")
